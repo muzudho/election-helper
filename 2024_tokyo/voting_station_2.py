@@ -46,36 +46,24 @@ def is_ignore_line(line):
 
 
 # 実施期間 実施時間
-#
-#   例： 4/17 ～ 4/22 8:30 ～ 20:00
-#
-ptn_time = r'\d+/\d+\s*～\s*\d+/\d+\s+\d+:\d+\s*～\s*\d+:\d+'
+patterns_of_time = [
+    # 例： 4/17 ～ 4/22 8:30 ～ 20:00
+    r'\d+/\d+\s*～\s*\d+/\d+\s+\d+:\d+\s*～\s*\d+:\d+',
 
-# 改行されて月日だけのケース
-#
-#   例： 4/22
-#
-ptn_time2 = r'\d+/\d+'
+    # 例： 4/22   ※改行されて月日だけのケース
+    r'\d+/\d+',
 
-# 実施期間 実施時間　表記揺れ
-#
-#   例： 4/18 ～ 4/21 10:00 20:00
-#
-ptn_time3 = r'\d+/\d+\s*～\s*\d+/\d+\s+\d+:\d+\s+\d+:\d+'
+    # 例： 4/18 ～ 4/21 10:00 20:00
+    r'\d+/\d+\s*～\s*\d+/\d+\s+\d+:\d+\s+\d+:\d+',
 
-# 実施期間 実施時間　表記揺れ
-#
-#   例： 6/21～7/6       8:30～20:00
-#
-ptn_time4 = r'\d+/\d+～\d+/\d+\s+\d+:\d+～\d+:\d+'
-
+    # 例： 6/21～7/6       8:30～20:00
+    r'\d+/\d+～\d+/\d+\s+\d+:\d+～\d+:\d+',
+]
 
 def remove_time(line):
     """実施期間 実施時間 の削除"""
-    line = re.sub(ptn_time, '', line)
-    line = re.sub(ptn_time2, '', line)
-    line = re.sub(ptn_time3, '', line)
-    line = re.sub(ptn_time4, '', line)
+    for pattern in patterns_of_time:
+        line = re.sub(pattern, '', line)
 
     return line
 
