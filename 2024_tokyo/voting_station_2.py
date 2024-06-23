@@ -104,8 +104,7 @@ if __name__ == '__main__':
     # 見出し
     town_name = None
 
-    #succeed_table = []
-    #failed_table = []
+    output_table = []
 
     for line in lines:
 
@@ -137,17 +136,17 @@ if __name__ == '__main__':
             building = m.group(1).strip()
             address = m.group(2).strip()
 
-            print(f'''"{town_name}", "{building}", "{address}"''')
-            #succeed_table.append(f'''"{town_name}", "{building}", "{address}"''')
+            output_table.append(f'''"{town_name}", "{building}", "{address}"''')
 
         else:
-            print(f'''[parse error] "{town_name}", "{line}"''')
-            #failed_table.append(f'''[parse error] "{town_name}", "{line}"''')
+            raise ValueError(f'''[parse error] "{town_name}", "{line}"''')
 
 
-    #for succeed_line in succeed_table:
-    #    print(succeed_line)
+    # ファイル書出し
+    file_name = 'voting_station_2_output_data.csv'
+    with open(file_name, 'w', encoding='utf-8') as f:
+        for line in output_table:
+            #print(line)
+            f.write(f'{line}\n')
 
-
-    #for failed_line in failed_table:
-    #    print(failed_line)
+    print(f"please read `{file_name}` file")
