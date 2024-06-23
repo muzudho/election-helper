@@ -104,6 +104,14 @@ if __name__ == '__main__':
         # 実施期間 実施時間は削除
         line = remove_time(line).strip()
 
-        print(f"""[read   ] "{town_name}", "{line}"\
-""")
+        # 最初に出てくるタブまでが建物名と仮定して抽出
+        m = re.match(r'(.+)\t(.*)', line)
+        if m:
+            building = m.group(1).strip()
+            address = m.group(2).strip()
 
+            print(f'''"{town_name}", "{building}", "{address}"''')
+
+        else:
+            print(f"""[parse error] "{town_name}", "{line}"\
+""")
