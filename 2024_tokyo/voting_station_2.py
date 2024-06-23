@@ -45,31 +45,47 @@ def is_ignore_line(line):
     return shall_ignore
 
 
+# 実施期間 実施時間
+#
+#   例： 4/17 ～ 4/22 8:30 ～ 20:00
+#
+ptn_time = r'\d+/\d+\s*～\s*\d+/\d+\s+\d+:\d+\s*～\s*\d+:\d+'
+
+# 改行されて月日だけのケース
+#
+#   例： 4/22
+#
+ptn_time2 = r'\d+/\d+'
+
+# 実施期間 実施時間　表記揺れ
+#
+#   例： 4/18 ～ 4/21 10:00 20:00
+#
+ptn_time3 = r'\d+/\d+\s*～\s*\d+/\d+\s+\d+:\d+\s+\d+:\d+'
+
+# 実施期間 実施時間　表記揺れ
+#
+#   例： 6/21～7/6       8:30～20:00
+#
+ptn_time4 = r'\d+/\d+～\d+/\d+\s+\d+:\d+～\d+:\d+'
+
+
+def remove_time(line):
+    """実施期間 実施時間 の削除"""
+    line = re.sub(ptn_time, '', line)
+    line = re.sub(ptn_time2, '', line)
+    line = re.sub(ptn_time3, '', line)
+    line = re.sub(ptn_time4, '', line)
+
+    return line
+
+
 ########################################
 # スクリプト実行時
 ########################################
 
 if __name__ == '__main__':
     """スクリプト実行時"""
-
-    # 実施期間 実施時間
-    #
-    #   例： 4/17 ～ 4/22 8:30 ～ 20:00
-    #
-    ptn_time = r'\d+/\d+ ～ \d+/\d+ \d+:\d+ ～ \d+:\d+'
-
-    # 改行されて月日だけのケース
-    #
-    #   例： 4/22
-    #
-    ptn_time2 = r'\d+/\d+'
-
-    # 実施期間 実施時間　表記揺れ
-    #
-    #   例： 4/18 ～ 4/21 10:00 20:00
-    #
-    ptn_time3 = r'\d+/\d+ ～ \d+/\d+ \d+:\d+ \d+:\d+'
-
 
     # ファイル読取
     with open('voting_station_2_input_data.txt', 'r', encoding='utf-8') as f:
@@ -84,12 +100,10 @@ if __name__ == '__main__':
         if is_ignore_line(line):
             continue
 
-        print(f"[read   ] {line}")
+        #print(f"[read   ] {line}")
 
         # 実施期間 実施時間は削除
-        line = re.sub(ptn_time, '', line)
-        line = re.sub(ptn_time2, '', line)
-        line = re.sub(ptn_time3, '', line)
+        line = remove_time(line)
 
-        print(f"        > {line}")
+        print(f"[read   ] {line}")
 
