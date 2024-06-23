@@ -17,8 +17,8 @@ output_file_name = 'output_data.csv'
 # 準備
 ########################################
 
-# 除外行の行頭の語句
-starts_text_of_ignore_row = """\
+# 除外行のリスト（テキスト入力）
+except_lines_as_text = """\
 このページの先頭です
 このページの本文へ移動
 
@@ -160,13 +160,14 @@ Multilingual
 © 西東京市
 """
 
-starts_of_ignore_row = []
+# 除外行のリスト
+except_lines = []
 
-for line in starts_text_of_ignore_row.split("\n"):
+for line in except_lines_as_text.split("\n"):
     line = line.strip()
     # 空行は除外
     if line != '':
-        starts_of_ignore_row.append(line)
+        except_lines.append(line)
 
 
 def is_ignore_line(line):
@@ -176,15 +177,7 @@ def is_ignore_line(line):
     if line == '':
         return True
 
-    shall_ignore = False
-
-    for word in starts_of_ignore_row:
-        if line.startswith(word):
-            #print(f"[ignored] {line}  word:`{word}`")
-            shall_ignore = True
-            break
-
-    return shall_ignore
+    return line in except_lines
 
 
 ########################################
