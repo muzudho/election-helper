@@ -11,6 +11,24 @@ import re
 
 # 除外行の行頭の語句
 starts_of_ignore_row = [
+    # ページのヘッダー
+    '本文へスキップします。',
+    '東京都選挙管理委員会',
+    '文字サイズ・色合い変更',
+    '都庁総合ホームページ',
+    'トップ',
+    '立候補者一覧',
+    '選挙公報',
+    '期日前投票所一覧',
+    '都議会議員補欠選挙',
+    '投開票速報',
+    '期日前投票所一覧',
+    'トップページ',
+    '期日前投票所一覧',
+    '※',
+    '区市町村をお選びください',
+
+    # テーブルのヘッダー
     '施設名',
 
     # ページのフッター
@@ -58,6 +76,9 @@ patterns_of_time = [
 
     # 例： 6/21～7/6       8:30～20:00
     r'\d+/\d+～\d+/\d+\s+\d+:\d+～\d+:\d+',
+
+    # 例： 10:00～17:00
+    r'\d+:\d+～\d+:\d+',
 ]
 
 def remove_time(line):
@@ -83,6 +104,9 @@ if __name__ == '__main__':
     # 見出し
     town_name = None
 
+    #succeed_table = []
+    #failed_table = []
+
     for line in lines:
 
         # 前後の空白、改行を除去
@@ -95,7 +119,7 @@ if __name__ == '__main__':
         #print(f"[read   ] {line}")
 
         # 町？名か判断
-        m = re.match(r'(.+)\(\d+\)', line)
+        m = re.match(r'(.+)[\(（]\d+[\)）]', line)
         if m:
             town_name = m.group(1)
             #print(f"[town   ] {town_name}")
@@ -104,6 +128,9 @@ if __name__ == '__main__':
         # 実施期間 実施時間は削除
         line = remove_time(line).strip()
 
+        if line == '':
+            continue
+
         # 最初に出てくるタブまでが建物名と仮定して抽出
         m = re.match(r'(.+)\t(.*)', line)
         if m:
@@ -111,7 +138,16 @@ if __name__ == '__main__':
             address = m.group(2).strip()
 
             print(f'''"{town_name}", "{building}", "{address}"''')
+            #succeed_table.append(f'''"{town_name}", "{building}", "{address}"''')
 
         else:
-            print(f"""[parse error] "{town_name}", "{line}"\
-""")
+            print(f'''[parse error] "{town_name}", "{line}"''')
+            #failed_table.append(f'''[parse error] "{town_name}", "{line}"''')
+
+
+    #for succeed_line in succeed_table:
+    #    print(succeed_line)
+
+
+    #for failed_line in failed_table:
+    #    print(failed_line)
