@@ -8,8 +8,7 @@
 
 ## 2
 
-期日前投票所一覧
-https://r6tochijisen.metro.tokyo.lg.jp/vote/index.html
+[期日前投票所一覧](./early_voting/README.md)  
 
 ## 3
 
