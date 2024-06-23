@@ -89,12 +89,21 @@ patterns_of_time = [
     r'\d+:\d+～\d+:\d+',
 ]
 
+
 def remove_time(line):
     """実施期間 実施時間 の削除"""
     for pattern in patterns_of_time:
         line = re.sub(pattern, '', line)
 
     return line
+
+
+def double_quote(text):
+    """カンマが含まれていれば、二重引用符で囲む"""
+    if ',' in text:
+        return f'"{text}"'
+
+    return text
 
 
 ########################################
@@ -121,7 +130,7 @@ if __name__ == '__main__':
     #   WKT を使うともっといい？
     #   `WKT` - 例えば緯度・経度。 例： `"POINT (139.4102538 35.7554727)"`
     #
-    output_table.append(f'''住所,施設名''')
+    output_table.append(f'''名前,住所''')
 
     for line in lines:
 
@@ -151,10 +160,10 @@ if __name__ == '__main__':
         m = re.match(r'(.+)\t(.*)', line)
         if m:
             building = m.group(1).strip()
-            address = m.group(2).strip()
+            address = f'東京都{m.group(2).strip()}'
 
             # 出力フォーマット
-            output_table.append(f'''"東京都{address}", "{building}"''')
+            output_table.append(f'''{double_quote(building)}, {double_quote(address)}''')
 
         else:
             raise ValueError(f'''[parse error] "{town_name}", "{line}"''')
