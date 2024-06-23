@@ -79,6 +79,10 @@ if __name__ == '__main__':
     with open('voting_station_2_input_data.txt', 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
+
+    # 見出し
+    town_name = None
+
     for line in lines:
 
         # 前後の空白、改行を除去
@@ -90,8 +94,16 @@ if __name__ == '__main__':
 
         #print(f"[read   ] {line}")
 
-        # 実施期間 実施時間は削除
-        line = remove_time(line)
+        # 町？名か判断
+        m = re.match(r'(.+)\(\d+\)', line)
+        if m:
+            town_name = m.group(1)
+            #print(f"[town   ] {town_name}")
+            continue
 
-        print(f"[read   ] {line}")
+        # 実施期間 実施時間は削除
+        line = remove_time(line).strip()
+
+        print(f"""[read   ] "{town_name}", "{line}"\
+""")
 
