@@ -5,7 +5,8 @@
 
 ![東京都選挙管理委員会　＞　（当日の）投票所一覧　＞　西東京市　Ｗｅｂページ](./res/202406__senkyo__24-0111-input-data-nishitokyo.png)  
 
-📖 [東京都選挙管理委員会　＞　（当日の）投票所一覧　＞　西東京市　Ｗｅｂページ](https://www.city.nishitokyo.lg.jp/siseizyoho/senkyo/touhyoujo.html)  
+* 📖 [東京都選挙管理委員会事務局　＞　都内区市町村選管等問い合わせ先](https://www.senkyo.metro.tokyo.lg.jp/kushichoson-contact/)
+  * 地図内： 西東京市　から　📖 [東京都選挙管理委員会　＞　（当日の）投票所一覧　＞　西東京市　Ｗｅｂページ](https://www.city.nishitokyo.lg.jp/siseizyoho/senkyo/touhyoujo.html)  
 
 👆　リンクをクリックして、開いたＷｅｂページで `[Ctrl] + [A]` キーを押すなどして全文選択して `[Ctrl] + [C]` キーを押すなどしてコピー  
 
