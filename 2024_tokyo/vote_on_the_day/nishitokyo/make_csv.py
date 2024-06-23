@@ -164,6 +164,7 @@ starts_of_ignore_row = []
 
 for line in starts_text_of_ignore_row.split("\n"):
     line = line.strip()
+    # 空行は除外
     if line != '':
         starts_of_ignore_row.append(line)
 
