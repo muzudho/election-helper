@@ -1,16 +1,11 @@
 # 2024年　東京都知事選挙
 
-## 1
 
-都知事選のが見つからないので代わりに市町村ので。  
+## 期日前の投票所一覧
 
-[📄東京都選挙管理委員会事務局　＞　投票所一覧　＞　令和5年4月23日執行区市町村議会議員及び長の選挙　期日前投票所一覧](https://www.senkyo.metro.tokyo.lg.jp/uploads/5kijitumaetouhyoujyoitiran-1.pdf)  
+📖 [［東京都選挙管理委員会　＞　期日前投票所一覧　Ｗｅｂページ］をＣＳＶに変換するスクリプト](./early_voting/README.md)  
 
-## 2
 
-[期日前投票所一覧](./early_voting/README.md)  
+## 当日の投票所一覧
 
-## 3
-
-都知事選　投票所
-https://www.senkyo.metro.tokyo.lg.jp/kushichoson-contact/
+📖 [［東京都選挙管理委員会　＞　（当日の）投票所一覧　＞　西東京市　Ｗｅｂページ］をＣＳＶに変換するスクリプト](./vote_on_the_day/nishitokyo/README.md)  
