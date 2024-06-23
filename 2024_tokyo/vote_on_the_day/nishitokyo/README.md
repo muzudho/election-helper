@@ -17,7 +17,7 @@
 
 ## ＣＳＶ変換の実行
 
-![ターミナル](./res/202406__senkyo__24-0016-terminal.png)  
+![ターミナル](./res/202406__senkyo__24-0132-terminal-nishitokyo.png)  
 
 例えば以下の通り  
 
