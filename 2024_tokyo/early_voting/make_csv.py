@@ -1,8 +1,16 @@
 #
-# cd 2024_tokyo
-# python voting_station_2.py
+# cd 2024_tokyo/early_voting
+# python make_csv.py
 #
 import re
+
+
+########################################
+# 設定
+########################################
+
+input_file_name = 'input_data.txt'
+output_file_name = 'output_data.csv'
 
 
 ########################################
@@ -97,7 +105,9 @@ if __name__ == '__main__':
     """スクリプト実行時"""
 
     # ファイル読取
-    with open('voting_station_2_input_data.txt', 'r', encoding='utf-8') as f:
+    print(f'read `{input_file_name}` file...')
+
+    with open(input_file_name, 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
 
@@ -143,10 +153,9 @@ if __name__ == '__main__':
 
 
     # ファイル書出し
-    file_name = 'voting_station_2_output_data.csv'
-    with open(file_name, 'w', encoding='utf-8') as f:
+    with open(output_file_name, 'w', encoding='utf-8') as f:
         for line in output_table:
             #print(line)
             f.write(f'{line}\n')
 
-    print(f"please read `{file_name}` file")
+    print(f"please read `{output_file_name}` file")
