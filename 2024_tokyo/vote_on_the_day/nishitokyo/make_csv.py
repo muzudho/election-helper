@@ -1,5 +1,5 @@
 #
-# cd 2024_tokyo/vote_on_the_day
+# cd 2024_tokyo/vote_on_the_day/nishitokyo
 # python make_csv.py
 #
 import re
