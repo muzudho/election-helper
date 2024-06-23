@@ -31,3 +31,7 @@ python make_csv.py
 ![output_data.txt](./res/202406__senkyo__24-0019-output-text.png)  
 
 👆　📄 `output_data.txt` 参照
+
+備考：グーグルマップが読み込めるCSVフォーマット  
+📖 [地図上の対象物をファイルからインポートする](https://support.google.com/mymaps/answer/3024836?hl=ja&co=GENIE.Platform%3DDesktop)  
+
