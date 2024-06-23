@@ -186,32 +186,6 @@ def is_ignore_line(line):
     return shall_ignore
 
 
-# 実施期間 実施時間
-patterns_of_time = [
-    # 例： 4/17 ～ 4/22 8:30 ～ 20:00
-    r'\d+/\d+\s*～\s*\d+/\d+\s+\d+:\d+\s*～\s*\d+:\d+',
-
-    # 例： 4/22   ※改行されて月日だけのケース
-    r'\d+/\d+',
-
-    # 例： 4/18 ～ 4/21 10:00 20:00
-    r'\d+/\d+\s*～\s*\d+/\d+\s+\d+:\d+\s+\d+:\d+',
-
-    # 例： 6/21～7/6       8:30～20:00
-    r'\d+/\d+～\d+/\d+\s+\d+:\d+～\d+:\d+',
-
-    # 例： 10:00～17:00
-    r'\d+:\d+～\d+:\d+',
-]
-
-def remove_time(line):
-    """実施期間 実施時間 の削除"""
-    for pattern in patterns_of_time:
-        line = re.sub(pattern, '', line)
-
-    return line
-
-
 ########################################
 # スクリプト実行時
 ########################################
@@ -227,7 +201,9 @@ if __name__ == '__main__':
 
 
     # 見出し
-    town_name = None
+    ward_number = None
+    building_name1 = None
+    building_name2 = None
 
     output_table = []
 
@@ -240,31 +216,34 @@ if __name__ == '__main__':
         if is_ignore_line(line):
             continue
 
-        print(f"[read   ] {line}")
+        #print(f"[read   ] {line}")
 
+        # 投票区の番号か判断
+        #
+        #   例： ［第1］
+        #
         # 町？名か判断
-        m = re.match(r'(.+)[\(（]\d+[\)）]', line)
+        m = re.match(r'第(\d+)\t(.*)', line)
         if m:
-            town_name = m.group(1)
-            #print(f"[town   ] {town_name}")
+
+            # 前のを flush
+            if ward_number != None:
+                output_table.append(f'''"{ward_number}", "{building_name1}", "{building_name2}"''')
+
+
+            ward_number = m.group(1)
+            building_name1 = m.group(2)
+            building_name2 = None
+            #print(f"[ward   ] {ward_number}  building_name1:{building_name1}")
             continue
 
-        # 実施期間 実施時間は削除
-        line = remove_time(line).strip()
-
-        if line == '':
-            continue
-
-        # 最初に出てくるタブまでが建物名と仮定して抽出
-        m = re.match(r'(.+)\t(.*)', line)
-        if m:
-            building = m.group(1).strip()
-            address = m.group(2).strip()
-
-            output_table.append(f'''"{town_name}", "{building}", "{address}"''')
-
-        else:
-            raise ValueError(f'''[parse error] "{town_name}", "{line}"''')
+        # 投票区の番号の続き
+        if ward_number != None and building_name2 == None:
+            #print(f"[投票区の番号の続き]  line:`{line}`")
+            m = re.match(r'(\S+)\t', line)
+            if m:
+                building_name2 = m.group(1)
+                #print(f"[投票区の番号の続き 2]  building_name2:`{building_name2}`")
 
 
     # ファイル書出し
