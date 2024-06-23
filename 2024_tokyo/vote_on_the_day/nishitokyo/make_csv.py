@@ -180,6 +180,14 @@ def is_ignore_line(line):
     return line in except_lines
 
 
+def double_quote(text):
+    """カンマが含まれていれば、二重引用符で囲む"""
+    if ',' in text:
+        return f'"{text}"'
+
+    return text
+
+
 ########################################
 # スクリプト実行時
 ########################################
@@ -196,10 +204,13 @@ if __name__ == '__main__':
 
     # 見出し
     ward_number = None
-    building_name1 = None
-    building_name2 = None
+    building_name = None
+    address = None
 
     output_table = []
+
+    # 出力フォーマット
+    output_table.append(f'''投票区番号, 住所, 施設名''')
 
     for line in lines:
 
@@ -222,22 +233,23 @@ if __name__ == '__main__':
 
             # 前のを flush
             if ward_number != None:
-                output_table.append(f'''"{ward_number}", "{building_name1}", "{building_name2}"''')
+                # 出力フォーマット
+                output_table.append(f'''{ward_number}, {double_quote(address)}, {double_quote(building_name)}''')
 
 
             ward_number = m.group(1)
-            building_name1 = m.group(2)
-            building_name2 = None
-            #print(f"[ward   ] {ward_number}  building_name1:{building_name1}")
+            building_name = m.group(2)
+            address = None
+            #print(f"[ward   ] {ward_number}  building_name:{building_name}")
             continue
 
         # 投票区の番号の続き
-        if ward_number != None and building_name2 == None:
+        if ward_number != None and address == None:
             #print(f"[投票区の番号の続き]  line:`{line}`")
-            m = re.match(r'(\S+)\t', line)
+            m = re.match(r'[\(（)](\S+)[\)）]\t', line)
             if m:
-                building_name2 = m.group(1)
-                #print(f"[投票区の番号の続き 2]  building_name2:`{building_name2}`")
+                address = f'東京都西東京市{m.group(1)}'
+                #print(f"[投票区の番号の続き 2]  address:`{address}`")
 
 
     # ファイル書出し
