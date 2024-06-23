@@ -118,9 +118,10 @@ if __name__ == '__main__':
 
     # 出力フォーマット
     #
-    #   WKT - 例えば緯度・経度。 例： `"POINT (139.4102538 35.7554727)"`
+    #   WKT を使うともっといい？
+    #   `WKT` - 例えば緯度・経度。 例： `"POINT (139.4102538 35.7554727)"`
     #
-    output_table.append(f'''WKT,名前,説明,列４,住所''')
+    output_table.append(f'''住所,施設名''')
 
     for line in lines:
 
@@ -153,7 +154,7 @@ if __name__ == '__main__':
             address = m.group(2).strip()
 
             # 出力フォーマット
-            output_table.append(f'''"POINT (139.0 35.0)", "{building}", "説明", "{town_name}", "東京都{address}"''')
+            output_table.append(f'''"東京都{address}", "{building}"''')
 
         else:
             raise ValueError(f'''[parse error] "{town_name}", "{line}"''')
