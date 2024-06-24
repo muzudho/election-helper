@@ -32,6 +32,9 @@ python make_csv.py
 
 👆　📄 `output_data.txt` 参照
 
-備考：グーグルマップが読み込めるCSVフォーマット  
-📖 [地図上の対象物をファイルからインポートする](https://support.google.com/mymaps/answer/3024836?hl=ja&co=GENIE.Platform%3DDesktop)  
 
+## グーグルマップへのインポート
+
+別サイトの記事を参考にしてください  
+
+* 📖 [住所のCSVファイルをインポートする](https://diamond.jp/articles/-/308329?page=2)  
