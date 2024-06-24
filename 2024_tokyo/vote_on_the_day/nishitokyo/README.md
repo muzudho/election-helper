@@ -29,7 +29,7 @@ python make_csv.py
 
 ## 出力データ
 
-![output_data.txt](./res/202406__senkyo__24-0118-output-data-nishitokyo.png)  
+![output_data.txt](./res/202406__senkyo__24-2253-vote-on-the-day-nishitokyo.png)  
 
 👆　📄 `output_data.txt` 参照
 
