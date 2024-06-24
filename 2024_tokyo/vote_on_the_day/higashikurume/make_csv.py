@@ -119,11 +119,8 @@ if __name__ == '__main__':
     # 出力フォーマット
     output_table.append(f'''投票区番号, 住所, 施設名''')
 
-    # 以前の行の［町名］
-    town_name_backup = None
-
-    # 以前の行の［施設名］
-    building_name_backup = None
+    # 投票所の名前の集合
+    voting_station_data_set = set()
 
     for line in lines:
 
@@ -144,100 +141,45 @@ if __name__ == '__main__':
         #
         #   例： `上の原	一丁目・二丁目	20	グリーンヒルズ2号棟集会所`
         #
-        # 住所は `東京都東久留米市上の原 グリーンヒルズ2号棟集会所` になる
-        # ※ ［グリーンヒルズ2号棟集会所］の番地はこの表に載ってないということに注意
-        # ※ ［一丁目・二丁目］は［グリーンヒルズ2号棟集会所］の番地ではない。そこへ投票に行く人たちの［区域］
+        # ［上の原］も、［一丁目・二丁目］も、［グリーンヒルズ2号棟集会所］の住所ではなく、
+        # ［上の原一丁目・二丁目］の人は［グリーンヒルズ2号棟集会所］へ行け、という指示であって、
+        # この表の中には［グリーンヒルズ2号棟集会所］の住所は書かれていない。
         #
-        # 👇 しかし
+        # そこでプログラマーにできることは［東京都久留米市 グリーンヒルズ2号棟集会所］というキーワードを作って
+        # グーグルマップに投げることだ。
+        #
+        # 👇 また、
         #
         #   例： `東京都東久留米市上の原 グリーンヒルズ2号棟集会所`
         #   例： `東京都東久留米市神宝町 グリーンヒルズ2号棟集会所`
         #
-        # どうもこの［地域］の人はどの［施設］へ行けと書いてるだけで、［グリーンヒルズ2号棟集会所］がどこにあるのかはこの表の中には無いようだ
+        # 票の中に［グリーンヒルズ2号棟集会所］が２回出てくるといったこともある
         #
 
-        town_name = None
         ward_num = None
-        building_name = None
 
         for token in tokens:
-            # 半角数字だけのセルが出てくるまでは、［町名］か、［区域］
+            # 半角数字だけのセルが出てくるまでは、［町名］か、［区域］。そのどちらも無視する
             if ward_num is None:
                 m = re.match(r'(\d+)', token)
                 if m:
                     ward_num = m.group(1)
 
-                else:
-                    # 住所だが、「二丁目」という住所は、その前の町名が欠けている恐れがある
-                    # セル結合で起こる
-                    if token.startswith('二丁目') or token.startswith('三丁目'):
-                        #print(f"# 「二丁目」で始まる住所を検知した。その前の町名が欠けている恐れがある。町名のバックアップ：{town_name_backup}")
-                        # その前の町名を追加
-                        town_name = town_name_backup
-
-                    # ［町名］
-                    elif town_name is None:
-                        town_name = token
-                        town_name_backup = town_name
-                        #print(f"town_name_backup:{town_name_backup}")
-
-                    # ［区域］は無視する
-
             # 半角数字が出てきて以降は施設名
+            # セル結合で施設名が無いこともある。その場合は無視
             else:
-                building_name = token
-                building_name_backup = building_name
+                voting_station_data_set.add((ward_num, token))
 
-        # 施設名が空なら、以前の行の施設名とする
-        if building_name is None:
-            building_name = building_name_backup
-
-        ## デバッグ表示
-        #if 1 < len(address_list):
-        #    for address in address_list:
-        #        print(f"[multiple address] `{address}`")
-
-        ## トークンを１行で出力
-        #output_tokens = []
-        #for token in tokens:
-        #    output_tokens.append(token)
-        #
-        #output_line = ', '.join(double_quote(output_tokens))
+    for voting_station_data in voting_station_data_set:
+        ward_num = voting_station_data[0]
+        voting_station_name = voting_station_data[1]
 
         # 出力フォーマット
-        address_cell = double_quote(f"東京都東久留米市{town_name} {building_name}")
-        building_cell = double_quote(building_name)
+        address_cell = double_quote(f"東京都東久留米市 {voting_station_name}")
+        building_cell = double_quote(voting_station_name)
         output_line = f'{ward_num}, {address_cell}, {building_cell}'
         print(f'[output] {output_line}')
         output_table.append(output_line)
-
-        ## 投票区の番号か判断
-        ##
-        ##   例： ［第1］
-        ##
-        ## 町？名か判断
-        #m = re.match(r'第(\d+)\t(.*)', line)
-        #if m:
-        #
-        #    # 前のを flush
-        #    if ward_number != None:
-        #        # 出力フォーマット
-        #        output_table.append(f'''{ward_number}, {double_quote(address)}, {double_quote(building_name)}''')
-        #
-        #
-        #    ward_number = m.group(1)
-        #    building_name = m.group(2)
-        #    address = None
-        #    #print(f"[ward   ] {ward_number}  building_name:{building_name}")
-        #    continue
-        #
-        ## 投票区の番号の続き
-        #if ward_number != None and address == None:
-        #    #print(f"[投票区の番号の続き]  line:`{line}`")
-        #    m = re.match(r'[\(（)](\S+)[\)）]\t', line)
-        #    if m:
-        #        address = f'東京都東久留米市{m.group(1)}'
-        #        #print(f"[投票区の番号の続き 2]  address:`{address}`")
 
 
     # ファイル書出し
