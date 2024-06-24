@@ -119,8 +119,11 @@ if __name__ == '__main__':
     # 出力フォーマット
     output_table.append(f'''投票区番号, 住所, 施設名''')
 
-    # 以前の行の町名
-    previous_town_name = None
+    # 以前の行の［町名］
+    town_name_backup = None
+
+    # 以前の行の［施設名］
+    building_name_backup = None
 
     for line in lines:
 
@@ -137,13 +140,28 @@ if __name__ == '__main__':
         tokens = line.split('\t')
         #print(f'len(tokens):{len(tokens)}')
 
-        address_list = []
+        # 👇 下記のようなデータがあった場合、
+        #
+        #   例： `上の原	一丁目・二丁目	20	グリーンヒルズ2号棟集会所`
+        #
+        # 住所は `東京都東久留米市上の原 グリーンヒルズ2号棟集会所` になる
+        # ※ ［グリーンヒルズ2号棟集会所］の番地はこの表に載ってないということに注意
+        # ※ ［一丁目・二丁目］は［グリーンヒルズ2号棟集会所］の番地ではない。そこへ投票に行く人たちの［区域］
+        #
+        # 👇 しかし
+        #
+        #   例： `東京都東久留米市上の原 グリーンヒルズ2号棟集会所`
+        #   例： `東京都東久留米市神宝町 グリーンヒルズ2号棟集会所`
+        #
+        # どうもこの［地域］の人はどの［施設］へ行けと書いてるだけで、［グリーンヒルズ2号棟集会所］がどこにあるのかはこの表の中には無いようだ
+        #
+
+        town_name = None
         ward_num = None
-        building = []
-        first_token = None
+        building_name = None
 
         for token in tokens:
-            # 半角数字だけのセルが出てくるまでは住所
+            # 半角数字だけのセルが出てくるまでは、［町名］か、［区域］
             if ward_num is None:
                 m = re.match(r'(\d+)', token)
                 if m:
@@ -152,28 +170,32 @@ if __name__ == '__main__':
                 else:
                     # 住所だが、「二丁目」という住所は、その前の町名が欠けている恐れがある
                     # セル結合で起こる
-                    if token.startswith('二丁目'):
-                        #print(f"# 「二丁目」で始まる住所を検知した。その前の町名が欠けている恐れがある。その前の町名：{previous_town_name}")
+                    if token.startswith('二丁目') or token.startswith('三丁目'):
+                        #print(f"# 「二丁目」で始まる住所を検知した。その前の町名が欠けている恐れがある。町名のバックアップ：{town_name_backup}")
                         # その前の町名を追加
-                        address_list.append(previous_town_name)
-                        address_list.append(token)
+                        town_name = town_name_backup
 
-                    else:
-                        address_list.append(token)
+                    # ［町名］
+                    elif town_name is None:
+                        town_name = token
+                        town_name_backup = town_name
+                        #print(f"town_name_backup:{town_name_backup}")
 
-                        if first_token is None:
-                            first_token = token
-                            previous_town_name = token
-                            #print(f"previous_town_name:{previous_town_name}")
+                    # ［区域］は無視する
 
             # 半角数字が出てきて以降は施設名
             else:
-                building.append(token)
+                building_name = token
+                building_name_backup = building_name
 
-        # TODO こういう複数の番地が並んでいるケースはどうする？
-        #
-        #   例： `8, 小山二丁目　四丁目1番～4番　五丁目1番～2番, 久留米中学校`
-        #
+        # 施設名が空なら、以前の行の施設名とする
+        if building_name is None:
+            building_name = building_name_backup
+
+        ## デバッグ表示
+        #if 1 < len(address_list):
+        #    for address in address_list:
+        #        print(f"[multiple address] `{address}`")
 
         ## トークンを１行で出力
         #output_tokens = []
@@ -183,8 +205,9 @@ if __name__ == '__main__':
         #output_line = ', '.join(double_quote(output_tokens))
 
         # 出力フォーマット
-        address_cell = double_quote("".join(address_list))
-        output_line = f'{ward_num}, {address_cell}, {double_quote("".join(building))}'
+        address_cell = double_quote(f"東京都東久留米市{town_name} {building_name}")
+        building_cell = double_quote(building_name)
+        output_line = f'{ward_num}, {address_cell}, {building_cell}'
         print(f'[output] {output_line}')
         output_table.append(output_line)
 
