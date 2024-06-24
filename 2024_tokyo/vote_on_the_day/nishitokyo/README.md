@@ -32,3 +32,10 @@ python make_csv.py
 ![output_data.txt](./res/202406__senkyo__24-0118-output-data-nishitokyo.png)  
 
 👆　📄 `output_data.txt` 参照
+
+
+## グーグルマップへのインポート
+
+別サイトの記事を参考にしてください  
+
+* 📖 [住所のCSVファイルをインポートする](https://diamond.jp/articles/-/308329?page=2)  

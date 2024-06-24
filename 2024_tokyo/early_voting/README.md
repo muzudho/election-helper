@@ -28,7 +28,7 @@ python make_csv.py
 
 ## 出力データ
 
-![output_data.txt](./res/202406__senkyo__24-0019-output-text.png)  
+![output_data.txt](./res/202406__senkyo__24-2248-early-voting-output-text.png)  
 
 👆　📄 `output_data.txt` 参照
 
