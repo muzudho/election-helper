@@ -5,7 +5,10 @@
 
 ## イベントまとめ
 
-📖 [２０２４年　東京都知事選挙](./2024_tokyo/README.md)  
+### ２０２４年　東京都知事選挙
+
+📖 [２０２４年　東京都知事選挙　＞　選挙対策Ｐｙｔｈｏｎスクリプト](./2024_tokyo/README.md)  
+📖 [グーグル　マイマップ　＞　投票所の場所（共有）](https://www.google.com/maps/d/edit?mid=14FtVcqsByVpenahdqTlaZLwngy8Y05g&usp=sharing)  
 
 
 ## テクノロジーまとめ
