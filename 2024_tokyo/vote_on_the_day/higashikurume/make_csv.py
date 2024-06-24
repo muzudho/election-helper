@@ -183,7 +183,7 @@ if __name__ == '__main__':
         address_cell = double_quote(f"東京都東久留米市 {voting_station_name}")
         building_cell = double_quote(voting_station_name)
         output_line = f'{ward_num}, {address_cell}, {building_cell}'
-        print(f'[output] {output_line}')
+        #print(f'[output] {output_line}')
         output_table.append(output_line)
 
 
