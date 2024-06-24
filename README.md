@@ -3,7 +3,7 @@
 どの党、どの個人でもご自由に使っていただけます  
 
 
-## イベントまとめ
+## イベント関連目次
 
 ### ２０２４年　東京都知事選挙
 
@@ -11,6 +11,6 @@
 📖 [グーグル　マイマップ　＞　投票所の場所（共有）](https://www.google.com/maps/d/edit?mid=14FtVcqsByVpenahdqTlaZLwngy8Y05g&usp=sharing)  
 
 
-## テクノロジーまとめ
+## テクノロジー関連目次
 
 📖 [グーグルマップの使い方調査](./technology/google_map/README.md)  
