@@ -128,20 +128,37 @@ if __name__ == '__main__':
         if is_ignore_line(line):
             continue
 
-        print(f"[read] {line}")
+        #print(f"[raw line] {line}")
 
         # とりあえず１行をタブでスプリット
         tokens = line.split('\t')
-        print(f'len(tokens):{len(tokens)}')
+        #print(f'len(tokens):{len(tokens)}')
 
-        # トークンを１行で出力
-        output_tokens = []
+        address = []
+        ward_num = None
+        building = []
+
         for token in tokens:
-            output_tokens.append(token)
+            # 半角数字だけのセルが出てくるまでは住所
+            if ward_num is None:
+                m = re.match(r'(\d+)', token)
+                if m:
+                    ward_num = m.group(1)
+                else:
+                    address.append(token)
+            # 半角数字が出てきて以降は施設名
+            else:
+                building.append(token)
 
-        output_line = ', '.join(double_quote(output_tokens))
+        ## トークンを１行で出力
+        #output_tokens = []
+        #for token in tokens:
+        #    output_tokens.append(token)
+        #
+        #output_line = ', '.join(double_quote(output_tokens))
 
         # 出力フォーマット
+        output_line = f'{ward_num}, {double_quote("".join(address))}, {double_quote("".join(building))}'
         print(f'[output] {output_line}')
         output_table.append(output_line)
 
