@@ -119,6 +119,9 @@ if __name__ == '__main__':
     # 出力フォーマット
     output_table.append(f'''投票区番号, 住所, 施設名''')
 
+    # 以前の行の町名
+    previous_town_name = None
+
     for line in lines:
 
         # 前後の空白、改行を除去
@@ -134,9 +137,10 @@ if __name__ == '__main__':
         tokens = line.split('\t')
         #print(f'len(tokens):{len(tokens)}')
 
-        address = []
+        address_list = []
         ward_num = None
         building = []
+        first_token = None
 
         for token in tokens:
             # 半角数字だけのセルが出てくるまでは住所
@@ -144,11 +148,32 @@ if __name__ == '__main__':
                 m = re.match(r'(\d+)', token)
                 if m:
                     ward_num = m.group(1)
+
                 else:
-                    address.append(token)
+                    # 住所だが、「二丁目」という住所は、その前の町名が欠けている恐れがある
+                    # セル結合で起こる
+                    if token.startswith('二丁目'):
+                        #print(f"# 「二丁目」で始まる住所を検知した。その前の町名が欠けている恐れがある。その前の町名：{previous_town_name}")
+                        # その前の町名を追加
+                        address_list.append(previous_town_name)
+                        address_list.append(token)
+
+                    else:
+                        address_list.append(token)
+
+                        if first_token is None:
+                            first_token = token
+                            previous_town_name = token
+                            #print(f"previous_town_name:{previous_town_name}")
+
             # 半角数字が出てきて以降は施設名
             else:
                 building.append(token)
+
+        # TODO こういう複数の番地が並んでいるケースはどうする？
+        #
+        #   例： `8, 小山二丁目　四丁目1番～4番　五丁目1番～2番, 久留米中学校`
+        #
 
         ## トークンを１行で出力
         #output_tokens = []
@@ -158,7 +183,8 @@ if __name__ == '__main__':
         #output_line = ', '.join(double_quote(output_tokens))
 
         # 出力フォーマット
-        output_line = f'{ward_num}, {double_quote("".join(address))}, {double_quote("".join(building))}'
+        address_cell = double_quote("".join(address_list))
+        output_line = f'{ward_num}, {address_cell}, {double_quote("".join(building))}'
         print(f'[output] {output_line}')
         output_table.append(output_line)
 
