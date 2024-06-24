@@ -163,14 +163,19 @@ if __name__ == '__main__':
             if ward_num is None:
                 m = re.match(r'(\d+)', token)
                 if m:
-                    ward_num = m.group(1)
+                    ward_num = int(m.group(1))
 
             # 半角数字が出てきて以降は施設名
             # セル結合で施設名が無いこともある。その場合は無視
             else:
                 voting_station_data_set.add((ward_num, token))
 
-    for voting_station_data in voting_station_data_set:
+    # 投票区番号順にソート
+    sorted_voting_station_data_list = sorted(
+            list(voting_station_data_set),
+            key=lambda tuple: tuple[0])
+
+    for voting_station_data in sorted_voting_station_data_list:
         ward_num = voting_station_data[0]
         voting_station_name = voting_station_data[1]
 
