@@ -3,6 +3,8 @@
 # python make_csv.py
 #
 import re
+import csv
+import datetime
 
 
 ########################################
@@ -126,7 +128,7 @@ if __name__ == '__main__':
     """スクリプト実行時"""
 
     # ファイル読取
-    print(f'read `{input_file_name}` file...')
+    print(f'[{datetime.datetime.now()}]  read `{input_file_name}` file...')
 
     with open(input_file_name, 'r', encoding='utf-8') as f:
         lines = f.readlines()
@@ -138,10 +140,6 @@ if __name__ == '__main__':
     output_table = []
 
     # 出力フォーマット
-    #
-    #   WKT を使うともっといい？
-    #   `WKT` - 例えば緯度・経度。 例： `"POINT (139.4102538 35.7554727)"`
-    #
     output_table.append(f'''住所, 施設名''')
 
     for line in lines:
@@ -173,35 +171,16 @@ if __name__ == '__main__':
         if m:
             building = m.group(1).strip()
 
-            # TODO 住所から［地下1階］は除去したい
-            # TODO ［東京都調布市西つつじヶ丘3-19-1, つつじケ丘児童館ホール］は川の上になってしまう。［東京都調布市西つつじヶ丘 つつじケ丘児童館ホール］に変えたい
             address = f'東京都{m.group(2).strip()}'
 
-            if address == '東京都調布市西つつじヶ丘3-19-1':
-                alternate = '東京都調布市西つつじヶ丘 つつじケ丘児童館ホール'
-                print(f"""\
-[processing] 住所加工。グーグル　マイマップでこの住所は川の上にあってエラーになるから
-    before: `{address}`
-    after : `{alternate}`
-""")
-                address = alternate
-
-            elif address.endswith('地下1階'):
-                alternate = address.removesuffix('地下1階').strip()
-                print(f"""\
-[processing] 住所加工。 地下かどうかは住所から省く
-    before: `{address}`
-    after : `{alternate}`
-""")
-                address = alternate
-
-
             # 出力フォーマット
-            output_table.append(f'''{double_quote(address)}, {double_quote(building)}''')
+            output_table.append(f'''{double_quote(address)},{double_quote(building)}''')
 
         else:
-            raise ValueError(f'''[parse error] "{town_name}", "{line}"''')
+            raise ValueError(f'''[{datetime.datetime.now()}]  [parse error] "{town_name}","{line}"''')
 
+
+    print(f"[{datetime.datetime.now()}]  write `{output_file_name}` file...")
 
     # ファイル書出し
     with open(output_file_name, 'w', encoding='utf-8') as f:
@@ -209,4 +188,57 @@ if __name__ == '__main__':
             #print(line)
             f.write(f'{line}\n')
 
-    print(f"please read `{output_file_name}` file")
+
+    #
+    # 以下、データ内容に加工が必要なものは、調整します
+    #
+    print(f"[{datetime.datetime.now()}]  processing `{output_file_name}` file...")
+
+    is_changed = False
+
+    with open(output_file_name, 'r', encoding='utf-8') as f:
+        reader = csv.reader(f)
+
+        # 二次元配列
+        row_list = [row for row in reader]
+        for i in range(1, len(row_list)):
+            row = row_list[i]
+
+            #print(f'[{datetime.datetime.now()}]  [processing]  {row}')
+            address = row[0]
+
+            if address == '東京都調布市西つつじヶ丘3-19-1':
+                alternate = '東京都調布市西つつじヶ丘 つつじケ丘児童館ホール'
+                print(f"""\
+[{datetime.datetime.now()}]  [processing]  住所加工。グーグル　マイマップでエラーになるから。この住所は川の上にある
+    before: `{address}`
+    after : `{alternate}`
+""")
+                row[0] = alternate
+                is_changed = True
+
+            elif address.endswith('地下1階'):
+                alternate = address.removesuffix('地下1階').strip()
+                print(f"""\
+[{datetime.datetime.now()}]  [processing]  住所加工。 グーグル　マイマップでエラーになるから。地下かどうかは住所から省く
+    before: `{address}`
+    after : `{alternate}`
+""")
+                row[0] = alternate
+                is_changed = True
+
+
+    # 変更があれば、再びファイル書出し
+    if is_changed:
+        print(f"[{datetime.datetime.now()}]  rewrite `{output_file_name}` file...")
+
+        with open(output_file_name, 'w', encoding='utf-8') as f:
+            for row in row_list:
+                line = ','.join(row)
+                #print(f"[{datetime.datetime.now()}]  [rewrite]  {line}")
+                f.write(f'{line}\n')
+    else:
+        print(f"[{datetime.datetime.now()}]  no chagned")
+
+
+    print(f"[{datetime.datetime.now()}]  please read `{output_file_name}` file")
