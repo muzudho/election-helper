@@ -204,7 +204,7 @@ if __name__ == '__main__':
 
     # 見出し
     ward_number = None
-    building_name = None
+    name_of_facility = None
     address = None
 
     output_table = []
@@ -234,13 +234,13 @@ if __name__ == '__main__':
             # 前のを flush
             if ward_number != None:
                 # 出力フォーマット
-                output_table.append(f'''{ward_number}, {double_quote(address)}, {double_quote(building_name)}''')
+                output_table.append(f'''{ward_number}, {double_quote(address)}, {double_quote(name_of_facility)}''')
 
 
             ward_number = m.group(1)
-            building_name = m.group(2)
+            name_of_facility = m.group(2)
             address = None
-            #print(f"[ward   ] {ward_number}  building_name:{building_name}")
+            #print(f"[ward   ] {ward_number}  施設名:{name_of_facility}")
             continue
 
         # 投票区の番号の続き

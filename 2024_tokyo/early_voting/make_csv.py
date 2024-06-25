@@ -169,12 +169,12 @@ if __name__ == '__main__':
         # 最初に出てくるタブまでが建物名と仮定して抽出
         m = re.match(r'(.+)\t(.*)', line)
         if m:
-            building = m.group(1).strip()
+            name_of_facility = m.group(1).strip()
 
             address = f'東京都{m.group(2).strip()}'
 
             # 出力フォーマット
-            output_table.append(f'''{double_quote(address)},{double_quote(building)}''')
+            output_table.append(f'''{double_quote(address)},{double_quote(name_of_facility)}''')
 
         else:
             raise ValueError(f'''[{datetime.datetime.now()}]  [parse error] "{town_name}","{line}"''')
