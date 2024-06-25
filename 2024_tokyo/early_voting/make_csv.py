@@ -177,6 +177,15 @@ if __name__ == '__main__':
             # TODO ［東京都調布市西つつじヶ丘3-19-1, つつじケ丘児童館ホール］は川の上になってしまう。［東京都調布市西つつじヶ丘 つつじケ丘児童館ホール］に変えたい
             address = f'東京都{m.group(2).strip()}'
 
+            if address == '東京都調布市西つつじヶ丘3-19-1':
+                alternate = '東京都調布市西つつじヶ丘 つつじケ丘児童館ホール'
+                print(f"""\
+[processing] 住所加工。グーグル　マイマップでこの住所は川の上にあってエラーになるから
+    before: `{address}`
+    after : `{alternate}`
+""")
+                address = alternate
+
             # 出力フォーマット
             output_table.append(f'''{double_quote(address)}, {double_quote(building)}''')
 
