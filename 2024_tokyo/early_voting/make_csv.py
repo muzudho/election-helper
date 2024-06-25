@@ -186,6 +186,16 @@ if __name__ == '__main__':
 """)
                 address = alternate
 
+            elif address.endswith('地下1階'):
+                alternate = address.removesuffix('地下1階').strip()
+                print(f"""\
+[processing] 住所加工。 地下かどうかは住所から省く
+    before: `{address}`
+    after : `{alternate}`
+""")
+                address = alternate
+
+
             # 出力フォーマット
             output_table.append(f'''{double_quote(address)}, {double_quote(building)}''')
 
