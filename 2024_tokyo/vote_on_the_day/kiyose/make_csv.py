@@ -189,7 +189,7 @@ if __name__ == '__main__':
 
 
             ward_number = m.group(1)
-            print(f"[ward num] {ward_number}")
+            #print(f"[ward num] {ward_number}")
             continue
 
         # 投票所（施設名）か判断
@@ -199,7 +199,7 @@ if __name__ == '__main__':
         m = re.match(r'投票所第\d+投票所投票所建物名称及び所在地(.*)', line)
         if m:
             name_of_facility = m.group(1)
-            print(f"[name of facility] {name_of_facility}")
+            #print(f"[name of facility] {name_of_facility}")
             continue
 
         # 住所か判断
@@ -209,7 +209,7 @@ if __name__ == '__main__':
         m = re.match(r'(.*)投票区の区域.*', line)
         if m:
             address = f'東京都{m.group(1)}'
-            print(f"[address] {address}")
+            #print(f"[address] {address}")
             continue
 
 

@@ -17,21 +17,21 @@
 
 ## ＣＳＶ変換の実行
 
-![ターミナル](./res/202406__senkyo__24-0132-terminal-nishitokyo.png)  
+![ターミナル](./res/202406__senkyo__26-0147-vote-on-the-day-kiyose-terminal.png)  
 
 例えば以下の通り  
 
 ```shell
-cd 2024_tokyo/vote_on_the_day/nishitokyo
+cd 2024_tokyo/vote_on_the_day/kiyose
 python make_csv.py
 ```
 
 
 ## 出力データ
 
-![output_data_nishitokyo.csv](./res/202406__senkyo__24-2253-vote-on-the-day-nishitokyo.png)  
+![output_data_kiyose.csv](./res/202406__senkyo__26-0148-vote-on-the-day-kiyose-output-text.png)  
 
-👆　📄 `output_data_nishitokyo.csv` 参照
+👆　📄 `output_data_kiyose.csv` 参照
 
 
 ## グーグルマップへのインポート
