@@ -10,7 +10,7 @@ import re
 ########################################
 
 input_file_name = 'input_data.txt'
-output_file_name = 'output_data.csv'
+output_file_name = 'output_data_higashikurume.csv'
 
 
 ########################################

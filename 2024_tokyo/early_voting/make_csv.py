@@ -10,7 +10,7 @@ import re
 ########################################
 
 input_file_name = 'input_data.txt'
-output_file_name = 'output_data.csv'
+output_file_name = 'output_data_early_voting.csv'
 
 
 ########################################
@@ -172,6 +172,9 @@ if __name__ == '__main__':
         m = re.match(r'(.+)\t(.*)', line)
         if m:
             building = m.group(1).strip()
+
+            # TODO 住所から［地下1階］は除去したい
+            # TODO ［東京都調布市西つつじヶ丘3-19-1, つつじケ丘児童館ホール］は川の上になってしまう。［東京都調布市西つつじヶ丘 つつじケ丘児童館ホール］に変えたい
             address = f'東京都{m.group(2).strip()}'
 
             # 出力フォーマット
