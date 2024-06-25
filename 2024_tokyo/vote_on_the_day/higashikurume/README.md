@@ -29,9 +29,9 @@ python make_csv.py
 
 ## 出力データ
 
-![output_data.txt](./res/202406__senkyo__25-0128-vote-on-the-day-higashikurume-output-text.png)  
+![output_data_higashikurume.csv](./res/202406__senkyo__25-0128-vote-on-the-day-higashikurume-output-text.png)  
 
-👆　📄 `output_data.txt` 参照
+👆　📄 `output_data_higashikurume.csv` 参照
 
 
 ## グーグルマップへのインポート

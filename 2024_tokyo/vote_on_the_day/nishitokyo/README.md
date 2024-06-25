@@ -29,9 +29,9 @@ python make_csv.py
 
 ## 出力データ
 
-![output_data.txt](./res/202406__senkyo__24-2253-vote-on-the-day-nishitokyo.png)  
+![output_data_nishitokyo.csv](./res/202406__senkyo__24-2253-vote-on-the-day-nishitokyo.png)  
 
-👆　📄 `output_data.txt` 参照
+👆　📄 `output_data_nishitokyo.csv` 参照
 
 
 ## グーグルマップへのインポート
