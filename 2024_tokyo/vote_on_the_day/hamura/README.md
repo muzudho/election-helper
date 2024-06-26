@@ -17,19 +17,19 @@
 
 ## ＣＳＶ変換の実行
 
-![ターミナル](./res/202406__senkyo__24-0132-terminal-nishitokyo.png)  
+![ターミナル](./res/202406__senkyo__27-0009-vote-on-the-day-hamura-terminal.png)  
 
 例えば以下の通り  
 
 ```shell
-cd 2024_tokyo/vote_on_the_day/nishitokyo
+cd 2024_tokyo/vote_on_the_day/hamura
 python make_csv.py
 ```
 
 
 ## 出力データ
 
-![output_data_nishitokyo.csv](./res/202406__senkyo__24-2253-vote-on-the-day-nishitokyo.png)  
+![output_data_nishitokyo.csv](./res/202406__senkyo__27-0011-vote-on-the-day-hamura-output-text.png)  
 
 👆　📄 `output_data_nishitokyo.csv` 参照
 
