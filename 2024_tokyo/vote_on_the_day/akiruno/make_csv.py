@@ -3,8 +3,10 @@
 # python make_csv.py
 #
 import re
+import csv
 import datetime
 import unicodedata
+import pprint
 
 
 ########################################
@@ -69,6 +71,69 @@ def to_formatted_data_record_string(
 
 
 ########################################
+# 人間の目視確認によるデータの手調整
+########################################
+
+def processing_data():
+    print(f"[{datetime.datetime.now()}]  processing `{output_file_name}` file...")
+
+    is_changed = False
+
+    with open(output_file_name, 'r', encoding='utf-8') as f:
+        reader = csv.reader(f)
+
+        # 二次元配列
+        row_list = [row for row in reader]
+
+        # 追加
+        print(f'[{datetime.datetime.now()}]  [processing]  レコード追加。ＰＤＦ解析困難のため。')
+
+        record = ['11', '名無し', '二宮３５０番地']
+        pprint.pprint(record)
+        row_list.append(record)
+        is_changed = True
+
+        record = ['13', '増戸小学校屋内運動場', '伊奈１１７３番地']
+        pprint.pprint(record)
+        row_list.append(record)
+
+        record = ['14', '五日市ファインプラザ', '伊奈８５９番地３']
+        pprint.pprint(record)
+        row_list.append(record)
+
+        record = ['16', '五日市小学校東裏校舎', '五日市３１５番地']
+        pprint.pprint(record)
+        row_list.append(record)
+
+        pprint.pprint(row_list)
+
+
+    # ［投票区の番号］順にソートしたい（二次元配列）
+    print(f"[{datetime.datetime.now()}]  sort by 投票区の番号")
+
+    # ヘッダー以外をソート
+    row_list = sorted(row_list[1:],
+            key=lambda row: int(row[0]))
+
+    # ヘッダーを先頭に付ける
+    row_list.insert(0, row_list[0])
+    pprint.pprint(row_list)
+
+
+    # 変更があれば、再びファイル書出し
+    if is_changed:
+        print(f"[{datetime.datetime.now()}]  rewrite `{output_file_name}` file...")
+
+        with open(output_file_name, 'w', encoding='utf-8') as f:
+            for row in row_list:
+                line = ','.join(row)
+                print(f"[{datetime.datetime.now()}]  [rewrite]  {line}")
+                f.write(f'{line}\n')
+    else:
+        print(f"[{datetime.datetime.now()}]  no chagned")
+
+
+########################################
 # スクリプト実行時
 ########################################
 
@@ -104,6 +169,15 @@ if __name__ == '__main__':
         #
         #   例： `第１ 野辺地区会館 野辺１２６番地４`
         #
+        #
+        # ただし、どうしようもないやつもある。こういうのは手作業で調整する
+        #
+        #   例： `第１１ 二宮３５０番地`
+        #   例： `第１３
+        #           増戸小学校屋内運動
+        #           場
+        #           伊奈１１７３番地`
+        #
         m = re.match(r'^第([０１２３４５６７８９]+) (.*) (.*)$', line)
         if m:
             # 全角数字
@@ -122,10 +196,6 @@ if __name__ == '__main__':
             # データ・テーブル
             data_table.append([ward_number, address, name_of_facility])
             continue
-
-
-    # ［投票区の番号］順にソートしたい（二次元配列）
-    data_table = sorted(data_table)
 
 
     print(f"[{datetime.datetime.now()}]  write `{output_file_name}` file...")
@@ -147,5 +217,11 @@ if __name__ == '__main__':
                     name_of_facility=name_of_facility)
             #print(output_line)
             f.write(f'{output_line}\n')
+
+
+    #
+    # 以下、データ内容に加工が必要なものは、調整します
+    #
+    processing_data()
 
     print(f"[{datetime.datetime.now()}]  please read `{output_file_name}` file")
