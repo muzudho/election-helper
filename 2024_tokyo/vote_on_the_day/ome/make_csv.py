@@ -141,6 +141,14 @@ def to_formatted_header_string():
     return f'投票区番号,住所,施設名'
 
 
+def to_formatted_data_record_string(
+        ward_number,
+        address,
+        name_of_facility):
+    """出力テキスト形式のデータ"""
+    return f'''{ward_number},{double_quote(address)},{double_quote(name_of_facility)}'''
+
+
 ########################################
 # スクリプト実行時
 ########################################
@@ -187,7 +195,10 @@ if __name__ == '__main__':
             # 前のを flush
             if ward_number != None:
                 # 出力フォーマット
-                output_table.append(f'''{ward_number}, {double_quote(address)}, {double_quote(name_of_facility)}''')
+                output_table.append(to_formatted_data_record_string(
+                        ward_number=ward_number,
+                        address=address,
+                        name_of_facility=name_of_facility))
 
 
             ward_number = m.group(1)
@@ -203,6 +214,15 @@ if __name__ == '__main__':
             if m:
                 address = f'東京都西東京市{m.group(1)}'
                 #print(f"[投票区の番号の続き 2]  address:`{address}`")
+
+
+    # 前のを flush
+    if ward_number != None:
+        # 出力フォーマット
+        output_table.append(to_formatted_data_record_string(
+                ward_number=ward_number,
+                address=address,
+                name_of_facility=name_of_facility))
 
 
     # ファイル書出し
