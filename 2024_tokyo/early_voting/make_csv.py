@@ -120,6 +120,18 @@ def double_quote(text):
     return text
 
 
+def to_formatted_header_string():
+    """出力テキスト形式のヘッダー"""
+    return f'住所, 施設名'
+
+
+def to_formatted_data_record_string(
+        address,
+        name_of_facility):
+    """出力テキスト形式のデータ"""
+    return f'{double_quote(address)},{double_quote(name_of_facility)}'
+
+
 ########################################
 # スクリプト実行時
 ########################################
@@ -140,7 +152,7 @@ if __name__ == '__main__':
     output_table = []
 
     # 出力フォーマット
-    output_table.append(f'''住所, 施設名''')
+    output_table.append(to_formatted_header_string())
 
     for line in lines:
 
@@ -174,7 +186,9 @@ if __name__ == '__main__':
             address = f'東京都{m.group(2).strip()}'
 
             # 出力フォーマット
-            output_table.append(f'''{double_quote(address)},{double_quote(name_of_facility)}''')
+            output_table.append(to_formatted_data_record_string(
+                    address=address,
+                    name_of_facility=name_of_facility))
 
         else:
             raise ValueError(f'''[{datetime.datetime.now()}]  [parse error] "{town_name}","{line}"''')
