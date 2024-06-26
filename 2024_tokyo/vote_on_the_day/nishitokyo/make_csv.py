@@ -199,7 +199,8 @@ def to_formatted_data_record_string(
         address,
         name_of_facility):
     """出力テキスト形式のデータ"""
-    return f'''{ward_number},{double_quote(address)},{double_quote(name_of_facility)}'''
+    address_2 = f'{address} {name_of_facility}'
+    return f'''{ward_number},{double_quote(address_2)},{double_quote(name_of_facility)}'''
 
 
 ########################################
@@ -235,7 +236,7 @@ if __name__ == '__main__':
         if is_ignore_line(line):
             continue
 
-        #print(f"[read   ] {line}")
+        #print(f"[read line]  {line}")
 
         # 投票区の番号か判断
         #
