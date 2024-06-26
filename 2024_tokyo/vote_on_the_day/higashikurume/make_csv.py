@@ -95,6 +95,11 @@ def double_quote(text):
     return text
 
 
+def to_formatted_header_string():
+    """出力テキスト形式のヘッダー"""
+    return f'投票区番号,住所,施設名'
+
+
 ########################################
 # スクリプト実行時
 ########################################
@@ -116,7 +121,7 @@ if __name__ == '__main__':
     output_table = []
 
     # 出力フォーマット
-    output_table.append(f'''投票区番号, 住所, 施設名''')
+    output_table.append(to_formatted_header_string())
 
     # 投票所の名前の集合
     voting_station_data_set = set()
