@@ -3,6 +3,7 @@
 # python make_csv.py
 #
 import re
+import datetime
 
 
 ########################################
@@ -177,7 +178,7 @@ if __name__ == '__main__':
     """スクリプト実行時"""
 
     # ファイル読取
-    print(f'read `{input_file_name}` file...')
+    print(f'[{datetime.datetime.now()}]  read `{input_file_name}` file...')
 
     with open(input_file_name, 'r', encoding='utf-8') as f:
         lines = f.readlines()
@@ -252,10 +253,13 @@ if __name__ == '__main__':
                 name_of_facility=name_of_facility))
 
 
+    print(f"[{datetime.datetime.now()}]  write `{output_file_name}` file...")
+
     # ファイル書出し
     with open(output_file_name, 'w', encoding='utf-8') as f:
         for line in output_table:
             #print(line)
             f.write(f'{line}\n')
 
-    print(f"please read `{output_file_name}` file")
+
+    print(f"[{datetime.datetime.now()}]  please read `{output_file_name}` file")
