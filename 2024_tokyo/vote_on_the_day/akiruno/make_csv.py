@@ -87,25 +87,25 @@ def processing_data():
 
         # 追加
         print(f'[{datetime.datetime.now()}]  [processing]  レコード追加。ＰＤＦ解析困難のため。')
-
-        record = ['11', '東京都あきる野市二宮３５０番地', '名無し']
-        pprint.pprint(record)
-        row_list.append(record)
         is_changed = True
 
-        record = ['13', '東京都あきる野市伊奈１１７３番地', '増戸小学校屋内運動場']
+        record = ['11', '東京都あきる野市二宮３５０番地 あきる野市役所', 'あきる野市役所']
         pprint.pprint(record)
         row_list.append(record)
 
-        record = ['14', '東京都あきる野市伊奈８５９番地３', '五日市ファインプラザ']
+        record = ['13', '東京都あきる野市伊奈１１７３番地 増戸小学校屋内運動場', '増戸小学校屋内運動場']
         pprint.pprint(record)
         row_list.append(record)
 
-        record = ['16', '東京都あきる野市五日市３１５番地', '五日市小学校東裏校舎']
+        record = ['14', '東京都あきる野市伊奈８５９番地３ 五日市ファインプラザ', '五日市ファインプラザ']
         pprint.pprint(record)
         row_list.append(record)
 
-        pprint.pprint(row_list)
+        record = ['16', '東京都あきる野市五日市３１５番地 五日市小学校東裏校舎', '五日市小学校東裏校舎']
+        pprint.pprint(record)
+        row_list.append(record)
+
+        #pprint.pprint(row_list)
 
 
     # ［投票区の番号］順にソートしたい（二次元配列）
@@ -120,7 +120,7 @@ def processing_data():
 
     # ヘッダーを先頭に付ける
     row_list.insert(0, header)
-    pprint.pprint(row_list)
+    #pprint.pprint(row_list)
 
 
     # 変更があれば、再びファイル書出し
@@ -130,7 +130,7 @@ def processing_data():
         with open(output_file_name, 'w', encoding='utf-8') as f:
             for row in row_list:
                 line = ','.join(row)
-                print(f"[{datetime.datetime.now()}]  [rewrite]  {line}")
+                #print(f"[{datetime.datetime.now()}]  [rewrite]  {line}")
                 f.write(f'{line}\n')
     else:
         print(f"[{datetime.datetime.now()}]  no chagned")
@@ -171,6 +171,7 @@ if __name__ == '__main__':
         # ［投票区の番号］、［施設名］、［住所］か判断
         #
         #   例： `第１ 野辺地区会館 野辺１２６番地４`
+        #   例： `第４ 菅生交流会館 菅生５８２番地 菅 生 全区域`
         #
         #
         # ただし、どうしようもないやつもある。こういうのは手作業で調整する
@@ -181,7 +182,7 @@ if __name__ == '__main__':
         #           場
         #           伊奈１１７３番地`
         #
-        m = re.match(r'^第([０１２３４５６７８９]+) (.*) (.*)$', line)
+        m = re.match(r'^第([０１２３４５６７８９]+) (\S+) (\S+)', line)
         if m:
             # 全角数字
             ward_number = m.group(1)
@@ -200,6 +201,8 @@ if __name__ == '__main__':
             data_table.append([ward_number, address, name_of_facility])
             continue
 
+    #pprint.pprint(data_table)
+
 
     print(f"[{datetime.datetime.now()}]  write `{output_file_name}` file...")
 
@@ -210,8 +213,8 @@ if __name__ == '__main__':
 
         for data_record in data_table:
             ward_number = data_record[0]
-            name_of_facility = data_record[1]
-            address = data_record[2]
+            address = data_record[1]
+            name_of_facility = data_record[2]
 
             # 出力フォーマット
             output_line = to_formatted_data_record_string(
