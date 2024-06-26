@@ -88,20 +88,20 @@ def processing_data():
         # 追加
         print(f'[{datetime.datetime.now()}]  [processing]  レコード追加。ＰＤＦ解析困難のため。')
 
-        record = ['11', '名無し', '二宮３５０番地']
+        record = ['11', '東京都あきる野市二宮３５０番地', '名無し']
         pprint.pprint(record)
         row_list.append(record)
         is_changed = True
 
-        record = ['13', '増戸小学校屋内運動場', '伊奈１１７３番地']
+        record = ['13', '東京都あきる野市伊奈１１７３番地', '増戸小学校屋内運動場']
         pprint.pprint(record)
         row_list.append(record)
 
-        record = ['14', '五日市ファインプラザ', '伊奈８５９番地３']
+        record = ['14', '東京都あきる野市伊奈８５９番地３', '五日市ファインプラザ']
         pprint.pprint(record)
         row_list.append(record)
 
-        record = ['16', '五日市小学校東裏校舎', '五日市３１５番地']
+        record = ['16', '東京都あきる野市五日市３１５番地', '五日市小学校東裏校舎']
         pprint.pprint(record)
         row_list.append(record)
 
@@ -111,12 +111,15 @@ def processing_data():
     # ［投票区の番号］順にソートしたい（二次元配列）
     print(f"[{datetime.datetime.now()}]  sort by 投票区の番号")
 
+    # ヘッダーを退避
+    header = row_list[0]
+
     # ヘッダー以外をソート
     row_list = sorted(row_list[1:],
             key=lambda row: int(row[0]))
 
     # ヘッダーを先頭に付ける
-    row_list.insert(0, row_list[0])
+    row_list.insert(0, header)
     pprint.pprint(row_list)
 
 
@@ -215,7 +218,7 @@ if __name__ == '__main__':
                     ward_number=ward_number,
                     address=address,
                     name_of_facility=name_of_facility)
-            #print(output_line)
+            #print(f'[{datetime.datetime.now()}]  [write 1]  ward_number:{ward_number}  name_of_facility:{name_of_facility}  address:{address}  `{output_line}`')
             f.write(f'{output_line}\n')
 
 
