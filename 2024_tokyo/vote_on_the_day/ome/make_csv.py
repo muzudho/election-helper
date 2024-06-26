@@ -219,7 +219,7 @@ if __name__ == '__main__':
             address = f'東京都青梅市{line.strip()}'
 
             #
-            # 前のを flush
+            # flush
             #
             # 出力フォーマット
             output_table.append(to_formatted_data_record_string(
@@ -234,7 +234,7 @@ if __name__ == '__main__':
         # その他、［区域］が続くが無視する
 
 
-    # 前のを flush
+    # flush
     if ward_number != None:
         # 出力フォーマット
         output_table.append(to_formatted_data_record_string(
