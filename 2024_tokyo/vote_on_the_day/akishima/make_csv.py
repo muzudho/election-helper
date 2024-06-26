@@ -49,6 +49,7 @@ Foreign Language
 
 
 投票所名	住所	区域
+投票所	住所	区域
 
 
 
@@ -177,7 +178,7 @@ if __name__ == '__main__':
         if is_ignore_line(line):
             continue
 
-        print(f"[{datetime.datetime.now()}]  [read line]  {line}")
+        #print(f"[{datetime.datetime.now()}]  [read line]  {line}")
 
         # 特殊パターン２
         #
@@ -196,7 +197,7 @@ if __name__ == '__main__':
                         ward_number=ward_number,
                         address=address,
                         name_of_facility=name_of_facility)
-                print(f"[{datetime.datetime.now()}]    [parse 2]  出力行：{output_line}")
+                #print(f"[{datetime.datetime.now()}]    [parse 2]  出力行：{output_line}")
                 output_table.append(output_line)
 
                 ward_number = None
@@ -204,14 +205,15 @@ if __name__ == '__main__':
                 continue
 
         if ward_number == None:
-            # 投票区の番号か判断
+            # 投票区の番号か判断（パターンが複数）
             #
-            #   例： `第1投票区`
+            #   例１： `第1投票区`  ※ 「区」
+            #   例２： `第10投票所` ※ 「所」
             #
-            m = re.match(r'^第(\d+)投票区$', line)
+            m = re.match(r'^第(\d+)投票[区所]$', line)
             if m:
                 ward_number = int(m.group(1))
-                print(f"[{datetime.datetime.now()}]    [ward num]  投票区番号：{ward_number}")
+                #print(f"[{datetime.datetime.now()}]    [ward num]  投票区番号：{ward_number}")
                 name_of_facility = None
                 address = None
                 continue
@@ -232,7 +234,7 @@ if __name__ == '__main__':
             if m:
                 name_of_facility = m.group(1)
                 address = f'東京都昭島市{m.group(2)}'
-                print(f"[{datetime.datetime.now()}]    [parse]  住所：{address}　施設名：{name_of_facility}")
+                #print(f"[{datetime.datetime.now()}]    [parse]  住所：{address}　施設名：{name_of_facility}")
 
                 # flush
                 #
@@ -241,7 +243,7 @@ if __name__ == '__main__':
                         ward_number=ward_number,
                         address=address,
                         name_of_facility=name_of_facility)
-                print(f"[{datetime.datetime.now()}]    [parse]  出力行：{output_line}")
+                #print(f"[{datetime.datetime.now()}]    [parse]  出力行：{output_line}")
                 output_table.append(output_line)
 
                 ward_number = None
@@ -253,7 +255,7 @@ if __name__ == '__main__':
                 is_pattern2 = True
                 name_of_facility = m.group(1)
                 address = f'東京都昭島市{m.group(2)}'
-                print(f"[{datetime.datetime.now()}]    [parse]  住所：{address}　施設名：{name_of_facility}")
+                #print(f"[{datetime.datetime.now()}]    [parse]  住所：{address}　施設名：{name_of_facility}")
 
 
     print(f"[{datetime.datetime.now()}]  write `{output_file_name}` file...")
