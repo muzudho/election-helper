@@ -125,7 +125,7 @@ def double_quote(text):
 
 def to_formatted_header_string():
     """出力テキスト形式のヘッダー"""
-    return f'''投票区番号,住所,施設名'''
+    return f'投票区番号,住所,施設名'
 
 
 def to_formatted_data_record_string(
