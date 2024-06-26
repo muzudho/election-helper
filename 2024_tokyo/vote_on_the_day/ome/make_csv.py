@@ -153,6 +153,60 @@ def to_formatted_data_record_string(
 
 
 ########################################
+# 人間の目視確認によるデータの手調整
+########################################
+
+def processing_data():
+    print(f"[{datetime.datetime.now()}]  processing `{output_file_name}` file...")
+
+    is_changed = False
+
+    with open(output_file_name, 'r', encoding='utf-8') as f:
+        reader = csv.reader(f)
+
+        # 二次元配列
+        row_list = [row for row in reader]
+        for i in range(1, len(row_list)):
+            row = row_list[i]
+
+            #print(f'[{datetime.datetime.now()}]  [processing]  {row}')
+            address = row[1]
+
+            if address == '東京都青梅市畑中2丁目548番地の1 畑中公会堂':
+                alternate = '東京都青梅市畑中2丁目591番地の1 畑中公会堂'
+                print(f"""\
+[{datetime.datetime.now()}]  [processing]  住所加工。グーグル　マイマップでエラーになるから。番地が違う？
+    before: `{address}`
+    after : `{alternate}`
+""")
+                row[1] = alternate
+                is_changed = True
+
+            elif address == '東京都青梅市御岳2丁目294番地 御岳会館':
+                alternate = '東京都青梅市御岳2丁目297番地 御岳会館'
+                print(f"""\
+[{datetime.datetime.now()}]  [processing]  住所加工。 グーグル　マイマップでエラーになるから。番地が違う？
+    before: `{address}`
+    after : `{alternate}`
+""")
+                row[1] = alternate
+                is_changed = True
+
+
+    # 変更があれば、再びファイル書出し
+    if is_changed:
+        print(f"[{datetime.datetime.now()}]  rewrite `{output_file_name}` file...")
+
+        with open(output_file_name, 'w', encoding='utf-8') as f:
+            for row in row_list:
+                line = ','.join(row)
+                #print(f"[{datetime.datetime.now()}]  [rewrite]  {line}")
+                f.write(f'{line}\n')
+    else:
+        print(f"[{datetime.datetime.now()}]  no chagned")
+
+
+########################################
 # スクリプト実行時
 ########################################
 
@@ -257,53 +311,6 @@ if __name__ == '__main__':
     #
     # 以下、データ内容に加工が必要なものは、調整します
     #
-    print(f"[{datetime.datetime.now()}]  processing `{output_file_name}` file...")
-
-    is_changed = False
-
-    with open(output_file_name, 'r', encoding='utf-8') as f:
-        reader = csv.reader(f)
-
-        # 二次元配列
-        row_list = [row for row in reader]
-        for i in range(1, len(row_list)):
-            row = row_list[i]
-
-            #print(f'[{datetime.datetime.now()}]  [processing]  {row}')
-            address = row[1]
-
-            if address == '東京都青梅市畑中2丁目548番地の1 畑中公会堂':
-                alternate = '東京都青梅市畑中2丁目591番地の1 畑中公会堂'
-                print(f"""\
-[{datetime.datetime.now()}]  [processing]  住所加工。グーグル　マイマップでエラーになるから。番地が違う？
-    before: `{address}`
-    after : `{alternate}`
-""")
-                row[1] = alternate
-                is_changed = True
-
-            elif address == '東京都青梅市御岳2丁目294番地 御岳会館':
-                alternate = '東京都青梅市御岳2丁目297番地 御岳会館'
-                print(f"""\
-[{datetime.datetime.now()}]  [processing]  住所加工。 グーグル　マイマップでエラーになるから。番地が違う？
-    before: `{address}`
-    after : `{alternate}`
-""")
-                row[1] = alternate
-                is_changed = True
-
-
-    # 変更があれば、再びファイル書出し
-    if is_changed:
-        print(f"[{datetime.datetime.now()}]  rewrite `{output_file_name}` file...")
-
-        with open(output_file_name, 'w', encoding='utf-8') as f:
-            for row in row_list:
-                line = ','.join(row)
-                #print(f"[{datetime.datetime.now()}]  [rewrite]  {line}")
-                f.write(f'{line}\n')
-    else:
-        print(f"[{datetime.datetime.now()}]  no chagned")
-
+    processing_data()
 
     print(f"[{datetime.datetime.now()}]  please read `{output_file_name}` file")

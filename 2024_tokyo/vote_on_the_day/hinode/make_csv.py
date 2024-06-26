@@ -3,6 +3,7 @@
 # python make_csv.py
 #
 import re
+import csv
 import datetime
 
 
@@ -173,6 +174,50 @@ def to_formatted_data_record_string(
 
 
 ########################################
+# 人間の目視確認によるデータの手調整
+########################################
+
+def processing_data():
+    print(f"[{datetime.datetime.now()}]  processing `{output_file_name}` file...")
+
+    is_changed = False
+
+    with open(output_file_name, 'r', encoding='utf-8') as f:
+        reader = csv.reader(f)
+
+        # 二次元配列
+        row_list = [row for row in reader]
+        for i in range(1, len(row_list)):
+            row = row_list[i]
+
+            #print(f'[{datetime.datetime.now()}]  [processing]  {row}')
+            address = row[1]
+
+            if address == '東京都西多摩郡日の出町平井1254番地1 日の出町立志茂町児童館':
+                alternate = '東京都西多摩郡日の出町平井1254番地1 志茂町児童館'
+                print(f"""\
+[{datetime.datetime.now()}]  [processing]  住所加工。グーグル　マイマップでエラーになるから。「町立」が正しい所、グーグルマップの方は「立」が脱字？ 町名が２回出てくるのが検索に適さない？
+    before: `{address}`
+    after : `{alternate}`
+""")
+                row[1] = alternate
+                is_changed = True
+
+
+    # 変更があれば、再びファイル書出し
+    if is_changed:
+        print(f"[{datetime.datetime.now()}]  rewrite `{output_file_name}` file...")
+
+        with open(output_file_name, 'w', encoding='utf-8') as f:
+            for row in row_list:
+                line = ','.join(row)
+                #print(f"[{datetime.datetime.now()}]  [rewrite]  {line}")
+                f.write(f'{line}\n')
+    else:
+        print(f"[{datetime.datetime.now()}]  no chagned")
+
+
+########################################
 # スクリプト実行時
 ########################################
 
@@ -215,7 +260,7 @@ if __name__ == '__main__':
         if m:
             ward_number = int(m.group(1))
             name_of_facility = m.group(2)
-            address = f'東京都西多摩郡{m.group(3)}'
+            address = f'東京都西多摩郡日の出町{m.group(3)}'
 
 
             # 出力フォーマット
@@ -236,5 +281,10 @@ if __name__ == '__main__':
             #print(line)
             f.write(f'{line}\n')
 
+
+    #
+    # 以下、データ内容に加工が必要なものは、調整します
+    #
+    processing_data()
 
     print(f"[{datetime.datetime.now()}]  please read `{output_file_name}` file")
