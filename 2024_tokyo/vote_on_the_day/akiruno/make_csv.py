@@ -4,6 +4,7 @@
 #
 import re
 import datetime
+import unicodedata
 
 
 ########################################
@@ -86,10 +87,7 @@ if __name__ == '__main__':
     name_of_facility = None
     address = None
 
-    output_table = []
-
-    # 出力フォーマット
-    output_table.append(to_formatted_header_string())
+    data_table = []
 
     for line in lines:
 
@@ -111,25 +109,43 @@ if __name__ == '__main__':
             # 全角数字
             ward_number = m.group(1)
 
+            # 半角数字に変換する。よく分かってない
+            #
+            #   📖 [Pythonで全角・半角を変換（mojimojiなど）](https://note.nkmk.me/python-str-convert-full-half-width/)
+            #
+            ward_number = int(unicodedata.normalize('NFKC', ward_number))
+
             name_of_facility = m.group(2)
             address = f'東京都あきる野市{m.group(3)}'
             #print(f"[ward   ] {ward_number}  施設名:{name_of_facility}")
 
-            # 出力フォーマット
-            output_table.append(to_formatted_data_record_string(
-                    ward_number=ward_number,
-                    address=address,
-                    name_of_facility=name_of_facility))
-
+            # データ・テーブル
+            data_table.append([ward_number, address, name_of_facility])
             continue
+
+
+    # ［投票区の番号］順にソートしたい（二次元配列）
+    data_table = sorted(data_table)
 
 
     print(f"[{datetime.datetime.now()}]  write `{output_file_name}` file...")
 
     # ファイル書出し
     with open(output_file_name, 'w', encoding='utf-8') as f:
-        for line in output_table:
-            #print(line)
-            f.write(f'{line}\n')
+        # ヘッダー
+        f.write(f'{to_formatted_header_string()}\n')
+
+        for data_record in data_table:
+            ward_number = data_record[0]
+            name_of_facility = data_record[1]
+            address = data_record[2]
+
+            # 出力フォーマット
+            output_line = to_formatted_data_record_string(
+                    ward_number=ward_number,
+                    address=address,
+                    name_of_facility=name_of_facility)
+            #print(output_line)
+            f.write(f'{output_line}\n')
 
     print(f"[{datetime.datetime.now()}]  please read `{output_file_name}` file")
