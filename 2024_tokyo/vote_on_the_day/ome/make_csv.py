@@ -146,7 +146,8 @@ def to_formatted_data_record_string(
         address,
         name_of_facility):
     """出力テキスト形式のデータ"""
-    return f'''{ward_number},{double_quote(address)},{double_quote(name_of_facility)}'''
+    address_2 = f'{address} {name_of_facility}'
+    return f'''{ward_number},{double_quote(address_2)},{double_quote(name_of_facility)}'''
 
 
 ########################################
@@ -184,36 +185,53 @@ if __name__ == '__main__':
 
         #print(f"[read   ] {line}")
 
-        # 投票区の番号か判断
+        if ward_number == None:
+            # ［投票区の番号］か判断
+            #
+            #   例： `第1投票区`
+            #
+            m = re.match(r'第(\d+)投票区', line)
+            if m:
+                ward_number = int(m.group(1))
+                name_of_facility = None
+                address = None
+
+                #print(f"[ward num] {ward_number}")
+                continue
+
+
+        # ［投票区の番号］には［施設名］が続く
         #
-        #   例： `第1投票区`
+        #   例： `天ヶ瀬体育館`
         #
-        # 町？名か判断
-        m = re.match(r'第(\d+)投票区', line)
-        if m:
-
-            # 前のを flush
-            if ward_number != None:
-                # 出力フォーマット
-                output_table.append(to_formatted_data_record_string(
-                        ward_number=ward_number,
-                        address=address,
-                        name_of_facility=name_of_facility))
-
-
-            ward_number = m.group(1)
-            name_of_facility = m.group(2)
-            address = None
-            #print(f"[ward   ] {ward_number}  施設名:{name_of_facility}")
+        if name_of_facility == None:
+            #print(f"[投票区の番号の続き]  line:`{line}`")
+            name_of_facility = line.strip()
             continue
 
-        # 投票区の番号の続き
-        if ward_number != None and address == None:
+
+        # ［施設名］には［住所］が続く
+        #
+        #   例： `天ヶ瀬町1111番地の1`
+        #
+        if address == None:
             #print(f"[投票区の番号の続き]  line:`{line}`")
-            m = re.match(r'[\(（)](\S+)[\)）]\t', line)
-            if m:
-                address = f'東京都西東京市{m.group(1)}'
-                #print(f"[投票区の番号の続き 2]  address:`{address}`")
+            address = f'東京都青梅市{line.strip()}'
+
+            #
+            # 前のを flush
+            #
+            # 出力フォーマット
+            output_table.append(to_formatted_data_record_string(
+                    ward_number=ward_number,
+                    address=address,
+                    name_of_facility=name_of_facility))
+
+            ward_number = None
+            continue
+
+
+        # その他、［区域］が続くが無視する
 
 
     # 前のを flush
