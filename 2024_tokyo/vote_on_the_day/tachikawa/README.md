@@ -17,7 +17,7 @@
 
 ## ＣＳＶ変換の実行
 
-![ターミナル](./res/202406__senkyo__24-0132-terminal-nishitokyo.png)  
+![ターミナル](./res/202406__senkyo__29-0033-vote-on-the-day-tachikawa-terminal.png)  
 
 例えば以下の通り  
 
@@ -29,9 +29,9 @@ python make_csv.py
 
 ## 出力データ
 
-![output_data_nishitokyo.csv](./res/202406__senkyo__28-2332-vote-on-the-day-tachikawa-input-web.png)  
+![output_data_tachikawa.csv](./res/202406__senkyo__29-0034-vote-on-the-day-tachikawa-output-text.png)  
 
-👆　📄 `output_data_nishitokyo.csv` 参照
+👆　📄 `output_data_tachikawa.csv` 参照
 
 
 ## グーグルマップへのインポート

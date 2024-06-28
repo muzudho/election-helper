@@ -161,7 +161,6 @@ def to_formatted_header_string():
 
 def to_formatted_data_record_string(
         ward_number,
-        #address,
         name_of_facility):
     """出力テキスト形式のデータ"""
     address_2 = f'東京都立川市 {name_of_facility}'
@@ -185,14 +184,119 @@ def processing_data():
         for i in range(1, len(row_list)):
             row = row_list[i]
 
-            ward_number = row[0]
+            #ward_number = row[0]
             address = row[1]
             name_of_facility = row[2]
-            print(f'[{datetime.datetime.now()}]    [processing]  投票区の番号：{ward_number}  住所：`{address}`  施設名：`{name_of_facility}`')
+            #print(f'[{datetime.datetime.now()}]    [processing]  投票区の番号：{ward_number}  住所：`{address}`  施設名：`{name_of_facility}`')
 
+            # 7
             if address == '東京都立川市 曙町2丁目1～10,18,19,29～':
-                alternate_address = '東京都立川市 女性総合センター・アイム'
                 alternate_name_of_facility = '女性総合センター・アイム'
+                alternate_address = f'東京都立川市 {alternate_name_of_facility}'
+                print(f"""\
+[{datetime.datetime.now()}]  [processing]  住所加工。フォーマットが崩れているから手入力
+    before: `{address}`  `{name_of_facility}`
+    after : `{alternate_address}`  `{alternate_name_of_facility}`
+""")
+                row[1] = alternate_address
+                row[2] = alternate_name_of_facility
+                is_changed = True
+
+            # 9
+            elif address == '東京都立川市 栄町4丁目の全部':
+                alternate_name_of_facility = '昭和第一学園高等学校'
+                alternate_address = f'東京都立川市 {alternate_name_of_facility}'
+                print(f"""\
+[{datetime.datetime.now()}]  [processing]  住所加工。フォーマットが崩れているから手入力
+    before: `{address}`  `{name_of_facility}`
+    after : `{alternate_address}`  `{alternate_name_of_facility}`
+""")
+                row[1] = alternate_address
+                row[2] = alternate_name_of_facility
+                is_changed = True
+
+            # 10
+            elif address == '東京都立川市 栄町6丁目1,4,7～':
+                alternate_name_of_facility = '第八小学校'
+                alternate_address = f'東京都立川市 {alternate_name_of_facility}'
+                print(f"""\
+[{datetime.datetime.now()}]  [processing]  住所加工。フォーマットが崩れているから手入力
+    before: `{address}`  `{name_of_facility}`
+    after : `{alternate_address}`  `{alternate_name_of_facility}`
+""")
+                row[1] = alternate_address
+                row[2] = alternate_name_of_facility
+                is_changed = True
+
+            # 12
+            elif address == '東京都立川市 砂川町2丁目の全部上砂町1,2丁目の全部':
+                alternate_name_of_facility = '第九小学校'
+                alternate_address = f'東京都立川市 {alternate_name_of_facility}'
+                print(f"""\
+[{datetime.datetime.now()}]  [processing]  住所加工。フォーマットが崩れているから手入力
+    before: `{address}`  `{name_of_facility}`
+    after : `{alternate_address}`  `{alternate_name_of_facility}`
+""")
+                row[1] = alternate_address
+                row[2] = alternate_name_of_facility
+                is_changed = True
+
+            # 19
+            elif address == '東京都立川市 一番町3,5,6丁目の全部':
+                alternate_name_of_facility = '松中小学校'
+                alternate_address = f'東京都立川市 {alternate_name_of_facility}'
+                print(f"""\
+[{datetime.datetime.now()}]  [processing]  住所加工。フォーマットが崩れているから手入力
+    before: `{address}`  `{name_of_facility}`
+    after : `{alternate_address}`  `{alternate_name_of_facility}`
+""")
+                row[1] = alternate_address
+                row[2] = alternate_name_of_facility
+                is_changed = True
+
+            # 21
+            elif address == '東京都立川市 砂川町5,6丁目の全部':
+                alternate_name_of_facility = '柏小学校'
+                alternate_address = f'東京都立川市 {alternate_name_of_facility}'
+                print(f"""\
+[{datetime.datetime.now()}]  [processing]  住所加工。フォーマットが崩れているから手入力
+    before: `{address}`  `{name_of_facility}`
+    after : `{alternate_address}`  `{alternate_name_of_facility}`
+""")
+                row[1] = alternate_address
+                row[2] = alternate_name_of_facility
+                is_changed = True
+
+            # 23
+            elif address == '東京都立川市 一番町2丁目1～13,一番町4丁目1～16':
+                alternate_name_of_facility = '立川第五中学校'
+                alternate_address = f'東京都立川市 {alternate_name_of_facility}'
+                print(f"""\
+[{datetime.datetime.now()}]  [processing]  住所加工。フォーマットが崩れているから手入力
+    before: `{address}`  `{name_of_facility}`
+    after : `{alternate_address}`  `{alternate_name_of_facility}`
+""")
+                row[1] = alternate_address
+                row[2] = alternate_name_of_facility
+                is_changed = True
+
+            # 24
+            elif address == '東京都立川市 西砂町6丁目のうち次以外':
+                alternate_name_of_facility = '立川第七中学校'
+                alternate_address = f'東京都立川市 {alternate_name_of_facility}'
+                print(f"""\
+[{datetime.datetime.now()}]  [processing]  住所加工。フォーマットが崩れているから手入力
+    before: `{address}`  `{name_of_facility}`
+    after : `{alternate_address}`  `{alternate_name_of_facility}`
+""")
+                row[1] = alternate_address
+                row[2] = alternate_name_of_facility
+                is_changed = True
+
+            # 26
+            elif address == '東京都立川市 泉町のうち次以外':
+                alternate_name_of_facility = '東京都立川地域防災センター'
+                alternate_address = f'東京都立川市 {alternate_name_of_facility}'
                 print(f"""\
 [{datetime.datetime.now()}]  [processing]  住所加工。フォーマットが崩れているから手入力
     before: `{address}`  `{name_of_facility}`
@@ -235,12 +339,8 @@ if __name__ == '__main__':
     # 区域
     name_of_area = None
     name_of_facility = None
-    address = None
 
-    output_table = []
-
-    # 出力フォーマット
-    output_table.append(to_formatted_header_string())
+    data_table = []
 
     for line in lines:
 
@@ -251,7 +351,7 @@ if __name__ == '__main__':
         if is_ignore_line(line):
             continue
 
-        print(f"[{datetime.datetime.now()}]  [read line]  `{line.strip()}`")
+        #print(f"[{datetime.datetime.now()}]  [read line]  `{line.strip()}`")
 
         if ward_number == None:
             # ［投票区の番号］か判断
@@ -263,8 +363,7 @@ if __name__ == '__main__':
                 ward_number = int(m.group(1))
                 name_of_area = None
                 name_of_facility = None
-                #address = None
-                print(f"[{datetime.datetime.now()}]    [parse]  投票区の番号：{ward_number}")
+                #print(f"[{datetime.datetime.now()}]    [parse]  投票区の番号：{ward_number}")
 
             continue
 
@@ -279,13 +378,10 @@ if __name__ == '__main__':
             if m:
                 name_of_area = m.group(1)
                 name_of_facility = m.group(2)
-                print(f"[{datetime.datetime.now()}]    [parse]  施設名(case A)：{name_of_facility}")
+                #print(f"[{datetime.datetime.now()}]    [parse]  施設名(case A)：{name_of_facility}")
 
-                # 出力フォーマット
-                output_table.append(to_formatted_data_record_string(
-                        ward_number=ward_number,
-                        #address=address,
-                        name_of_facility=name_of_facility))
+                # データ・テーブル
+                data_table.append([ward_number, name_of_facility])
 
                 ward_number = None
                 continue
@@ -301,13 +397,10 @@ if __name__ == '__main__':
 
             # 末尾がタブで終わらなければ［施設名］
             name_of_facility = line.strip()
-            print(f"[{datetime.datetime.now()}]    [parse]  施設名(case B)：{name_of_facility}")
+            #print(f"[{datetime.datetime.now()}]    [parse]  施設名(case B)：{name_of_facility}")
 
-            # 出力フォーマット
-            output_table.append(to_formatted_data_record_string(
-                    ward_number=ward_number,
-                    #address=address,
-                    name_of_facility=name_of_facility))
+            # データ・テーブル
+            data_table.append([ward_number, name_of_facility])
 
             ward_number = None
             continue
@@ -316,13 +409,10 @@ if __name__ == '__main__':
         # 施設名
         if name_of_facility == None:
             name_of_facility = line.strip()
-            print(f"[{datetime.datetime.now()}]    [parse]  施設名(case C)：{name_of_facility}")
+            #print(f"[{datetime.datetime.now()}]    [parse]  施設名(case C)：{name_of_facility}")
 
-            # 出力フォーマット
-            output_table.append(to_formatted_data_record_string(
-                    ward_number=ward_number,
-                    #address=address,
-                    name_of_facility=name_of_facility))
+            # データ・テーブル
+            data_table.append([ward_number, name_of_facility])
 
             ward_number = None
             continue
@@ -332,9 +422,17 @@ if __name__ == '__main__':
 
     # ファイル書出し
     with open(output_file_name, 'w', encoding='utf-8') as f:
-        for line in output_table:
-            #print(line)
-            f.write(f'{line}\n')
+        # 出力フォーマット
+        f.write(f'{to_formatted_header_string()}\n')
+
+        for data_record in data_table:
+            # 出力フォーマット
+            output_line = to_formatted_data_record_string(
+                    ward_number=data_record[0],
+                    name_of_facility=data_record[1])
+
+            #print(f"[{datetime.datetime.now()}]    output_line:`{output_line}`")
+            f.write(f'{output_line}\n')
 
 
     #
