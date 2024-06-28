@@ -195,14 +195,14 @@ if __name__ == '__main__':
 
     for line in lines:
 
-        # 前後の空白、改行を除去
-        line = line.strip()
+        # 末尾がタブかどうかは判定材料
+        #line = line.strip()
 
         # 除外行
         if is_ignore_line(line):
             continue
 
-        print(f"[{datetime.datetime.now()}]  [read line]  {line}")
+        print(f"[{datetime.datetime.now()}]  [read line]  `{line.strip()}`")
 
         if ward_number == None:
             # ［投票区の番号］か判断
@@ -230,7 +230,7 @@ if __name__ == '__main__':
             if m:
                 name_of_area = m.group(1)
                 name_of_facility = m.group(2)
-                print(f"[{datetime.datetime.now()}]    [parse]  施設名：{name_of_facility}")
+                print(f"[{datetime.datetime.now()}]    [parse]  施設名(case A)：{name_of_facility}")
 
                 # 出力フォーマット
                 output_table.append(to_formatted_data_record_string(
@@ -251,8 +251,8 @@ if __name__ == '__main__':
                 continue
 
             # 末尾がタブで終わらなければ［施設名］
-            name_of_facility = line
-            print(f"[{datetime.datetime.now()}]    [parse]  施設名：{name_of_facility}")
+            name_of_facility = line.strip()
+            print(f"[{datetime.datetime.now()}]    [parse]  施設名(case B)：{name_of_facility}")
 
             # 出力フォーマット
             output_table.append(to_formatted_data_record_string(
@@ -266,8 +266,8 @@ if __name__ == '__main__':
 
         # 施設名
         if name_of_facility == None:
-            name_of_facility = line
-            print(f"[{datetime.datetime.now()}]    [parse]  施設名：{name_of_facility}")
+            name_of_facility = line.strip()
+            print(f"[{datetime.datetime.now()}]    [parse]  施設名(case C)：{name_of_facility}")
 
             # 出力フォーマット
             output_table.append(to_formatted_data_record_string(
