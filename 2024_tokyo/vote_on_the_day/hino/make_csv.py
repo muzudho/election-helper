@@ -187,6 +187,19 @@ def processing_data():
                 is_changed = True
 
             else:
+
+                address = row[1]
+
+                if address == '東京都日野市川辺堀之内190番地先 上田地区センター':
+                    alternate = '東京都日野市川辺堀之内 上田地区センター'
+                    print(f"""\
+[{datetime.datetime.now()}]  [processing]  住所加工。 グーグル　マイマップでエラーになるから。「先」という番地表現は無理？
+    before: `{address}`
+    after : `{alternate}`
+""")
+                    row[1] = alternate
+                    is_changed = True
+
                 row_list_2.append(row)
 
 
