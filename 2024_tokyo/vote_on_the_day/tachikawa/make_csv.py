@@ -3,6 +3,7 @@
 # python make_csv.py
 #
 import re
+import csv
 import datetime
 
 
@@ -168,6 +169,54 @@ def to_formatted_data_record_string(
 
 
 ########################################
+# 人間の目視確認によるデータの手調整
+########################################
+
+def processing_data():
+    print(f"[{datetime.datetime.now()}]  processing `{output_file_name}` file...")
+
+    is_changed = False
+
+    with open(output_file_name, 'r', encoding='utf-8') as f:
+        reader = csv.reader(f)
+
+        # 二次元配列
+        row_list = [row for row in reader]
+        for i in range(1, len(row_list)):
+            row = row_list[i]
+
+            ward_number = row[0]
+            address = row[1]
+            name_of_facility = row[2]
+            print(f'[{datetime.datetime.now()}]    [processing]  投票区の番号：{ward_number}  住所：`{address}`  施設名：`{name_of_facility}`')
+
+            if address == '東京都立川市 曙町2丁目1～10,18,19,29～':
+                alternate_address = '東京都立川市 女性総合センター・アイム'
+                alternate_name_of_facility = '女性総合センター・アイム'
+                print(f"""\
+[{datetime.datetime.now()}]  [processing]  住所加工。フォーマットが崩れているから手入力
+    before: `{address}`  `{name_of_facility}`
+    after : `{alternate_address}`  `{alternate_name_of_facility}`
+""")
+                row[1] = alternate_address
+                row[2] = alternate_name_of_facility
+                is_changed = True
+
+
+    # 変更があれば、再びファイル書出し
+    if is_changed:
+        print(f"[{datetime.datetime.now()}]  rewrite `{output_file_name}` file...")
+
+        with open(output_file_name, 'w', encoding='utf-8') as f:
+            for row in row_list:
+                line = ','.join(row)
+                #print(f"[{datetime.datetime.now()}]  [rewrite]  {line}")
+                f.write(f'{line}\n')
+    else:
+        print(f"[{datetime.datetime.now()}]  no chagned")
+
+
+########################################
 # スクリプト実行時
 ########################################
 
@@ -286,5 +335,11 @@ if __name__ == '__main__':
         for line in output_table:
             #print(line)
             f.write(f'{line}\n')
+
+
+    #
+    # 以下、データ内容に加工が必要なものは、調整します
+    #
+    processing_data()
 
     print(f"[{datetime.datetime.now()}]  please read `{output_file_name}` file")
